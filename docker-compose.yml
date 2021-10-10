@@ -2,8 +2,8 @@ version: "2"
 services:
 
   xpto-server:
-    image: lopesivan/xpto-server:amd64-1.1.1
-    container_name: xpto-server
+    image: ${IMAGE}:${META_TAG}
+    container_name: ${CONTAINER_NAME}
     hostname: xpto-server
     # command: /bin/sh /opt/sdk/bin/entrypoint.sh
 
