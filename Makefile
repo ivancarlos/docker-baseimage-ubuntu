@@ -62,6 +62,9 @@ up: export CONTAINER_NAME := $(CONTAINER_NAME)
 up:
 	USER=${USER} GROUP=${GROUP} UID=${UID} GID=${GID} $(DOCKER_COMPOSE) up -d ${SERVICE}
 
+run: export META_TAG := $(META_TAG)
+run: export IMAGE := $(IMAGE)
+run: export CONTAINER_NAME := $(CONTAINER_NAME)
 run:
 	$(DOCKER_COMPOSE) run --rm \
 		--name ${NAME} \
