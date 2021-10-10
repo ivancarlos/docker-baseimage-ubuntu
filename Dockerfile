@@ -116,6 +116,6 @@ COPY ./system/su-exec/su-exec /usr/local/bin/su-exec
 COPY system/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # add local files
-COPY system/root/ /
+#COPY system/root/ /
 
 ENTRYPOINT ["/init"]
