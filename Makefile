@@ -1,6 +1,6 @@
 MAJOR = 1
 MINOR = 1
-PATCH = 1
+PATCH = 2
 # Dado um número de versão MAJOR.MINOR.PATCH, incremente a:
 
 # 1. versão Maior(MAJOR): quando fizer mudanças incompatíveis na API,
@@ -95,7 +95,7 @@ rm-network:
 	$(DOCKER) network ls| awk '$$2 !~ "(bridge|host|none)" {print "docker network rm " $$1}' | sed '1d'
 
 rmi:
-	echo docker rmi ${MACHINENAME}:${META_TAG}
+	docker rmi ${MACHINENAME}:${META_TAG}
 
 rm-all:
 	$(DOCKER) ps -aq -f status=exited| xargs $(DOCKER) rm
