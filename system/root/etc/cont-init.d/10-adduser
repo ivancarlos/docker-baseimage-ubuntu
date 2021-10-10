@@ -32,3 +32,5 @@ User gid:    $(id -g abc)
 chown abc:abc /app
 chown abc:abc /config
 chown abc:abc /defaults
+
+. /usr/local/bin/entrypoint.sh
