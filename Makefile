@@ -11,6 +11,11 @@ include .version
 #    MAJOR.MINOR.PATCH.
 
 NAME              = xpto-server
+USER              = $(shell id -u -n)
+GROUP             = $(shell id -g -n)
+UID               = $(shell id -u)
+GID               = $(shell id -g)
+
 VERSION           = $(MAJOR).$(MINOR).$(PATCH)
 SERVICE           = ${NAME}
 OWNER             = ${GITHUB_USER}
@@ -51,12 +56,11 @@ BUILD_OPTS = $(BUILD_LABEL) -t ${IMAGE}:${META_TAG} --build-arg VERSION="${VERSI
 
 all: status
 
+up: export META_TAG := $(META_TAG)
+up: export IMAGE := $(IMAGE)
+up: export CONTAINER_NAME := $(CONTAINER_NAME)
 up:
-	$(DOCKER_COMPOSE) up -d \
-		-e USER=$$(id -u -n) \
-		-e GROUP=$$(id -g -n) \
-		-e UID=$$(id -u) \
-		-e GID=$$(id -g) ${SERVICE}
+	USER=${USER} GROUP=${GROUP} UID=${UID} GID=${GID} $(DOCKER_COMPOSE) up -d ${SERVICE}
 
 run:
 	$(DOCKER_COMPOSE) run --rm \
@@ -66,6 +70,9 @@ run:
 		-e UID=$$(id -u) \
 		-e GID=$$(id -g) \
 		${SERVICE}
+
+exec:
+	$(DOCKER) exec -it $(CONTAINER_NAME) /bin/bash
 
 ps:
 	$(DOCKER) ps -a
@@ -120,9 +127,6 @@ stop:
 
 rm:
 	$(DOCKER) rm $(CONTAINER_NAME)
-
-exec:
-	$(DOCKER) exec -it $(CONTAINER_NAME) /bin/bash
 
 build:
 	$(DOCKER) build $(BUILD_OPTS) .
