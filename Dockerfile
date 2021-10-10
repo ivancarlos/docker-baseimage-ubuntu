@@ -112,8 +112,8 @@ RUN \
 	/var/tmp/*
 
 # enable su
-COPY system/su-exec /usr/local/bin/
-COPY system/entrypoint.sh /usr/local/bin/
+COPY ./system/su-exec/su-exec /usr/local/bin/su-exec
+COPY system/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # add local files
 COPY system/root/ /
