@@ -11,10 +11,10 @@ services:
       - "8989:443"
 
     volumes:
+      - ./system/root/etc/cont-init.d:/etc/cont-init.d
       - ./system/opt/sdk:/opt/sdk
       - ./system/var/sdk:/var/sdk
       - ./system/etc/sdk:/etc/sdk
-      - ./system/root/etc/cont-init.d:/etc/cont-init
 
     env_file: env.production
 
