@@ -1,5 +1,9 @@
 #!/usr/bin/with-contenv bash
 
+export HOME=/home/$USER
+mkdir -p $HOME
+mkdir /app /config /defaults
+
 # create custom folders and secure permissions
 mkdir -p /config/{custom-cont-init.d,custom-services.d}
 chown -R 0:0 /config/{custom-cont-init.d,custom-services.d}
