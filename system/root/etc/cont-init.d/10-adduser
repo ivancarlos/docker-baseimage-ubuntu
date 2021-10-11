@@ -17,10 +17,6 @@ Author: Ivan Lopes
 Brought to you by ivanlopes.eng.br
 -------------------------------------'
 
-echo getent group $GROUP
-getent group $GROUP
-echo getent group $GID
-getent group $GID
 echo USER=${USER} GROUP=${GROUP} UID=${UID} GID=${GID}
 if [ -z "$GID" -o -z "$UID" -o -z "$USER" -o -z "$GROUP" ]; then
 	echo Running as root
@@ -38,6 +34,4 @@ else
 	else
 		echo User name $USER or id $UID already exist
 	fi
-	export HOME=/home/$USER
-	mkdir -p $HOME
 fi
