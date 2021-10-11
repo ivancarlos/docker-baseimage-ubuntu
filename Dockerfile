@@ -93,13 +93,6 @@ RUN \
 	tzdata && \
  echo "**** generate locale ****" && \
  locale-gen en_US.UTF-8 && \
- echo "**** create abc user and make our folders ****" && \
- useradd -u 911 -U -d /config -s /bin/false abc && \
- usermod -G users abc && \
- mkdir -p \
-	/app \
-	/config \
-	/defaults && \
  mv /usr/bin/with-contenv /usr/bin/with-contenvb && \
  patch -u /etc/s6/init/init-stage2 -i /tmp/patch/etc/s6/init/init-stage2.patch && \
  echo "**** cleanup ****" && \
