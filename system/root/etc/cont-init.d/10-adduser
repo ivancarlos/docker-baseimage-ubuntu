@@ -1,11 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-PUID=${PUID:-911}
-PGID=${PGID:-911}
-
-groupmod -o -g "$PGID" abc
-usermod -o -u "$PUID" abc
-
 echo '
 -------------------------------------
             ██╗  ██╗██████╗
@@ -21,16 +15,31 @@ Author: Ivan Lopes
   Site: ivanlopes.eng.br
 
 Brought to you by ivanlopes.eng.br
--------------------------------------
-GID/UID
 -------------------------------------'
-echo "
-User uid:    $(id -u abc)
-User gid:    $(id -g abc)
--------------------------------------
-"
-chown abc:abc /app
-chown abc:abc /config
-chown abc:abc /defaults
 
-. /usr/local/bin/entrypoint.sh
+echo getent group $GROUP
+getent group $GROUP
+echo getent group $GID
+getent group $GID
+echo USER=${USER} GROUP=${GROUP} UID=${UID} GID=${GID}
+if [ -z "$GID" -o -z "$UID" -o -z "$USER" -o -z "$GROUP" ]; then
+	echo Running as root
+	exec "$@"
+else
+	if [ ! -z "$(getent group $GROUP)" -a ! -z "$(getent group $GID)" ]; then
+		echo Creating group $GROUP with id $GID
+		groupadd -g $GID $GROUP
+	else
+		echo Group name $GROUP or id $GID already exist
+	fi
+	if [ ! -z "$(getent passwd $USER)" -a ! -z "$(getent passwd $UID)" ]; then
+		echo Creating user $USER with id $UID
+		useradd -u $UID -g $GID $USER
+	else
+		echo User name $USER or id $UID already exist
+	fi
+	export HOME=/home/$USER
+	mkdir -p $HOME
+	exec /usr/local/bin/su-exec $USER "$@"
+	chown $USER:$GROUP $HOME
+fi
