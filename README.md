@@ -61,3 +61,11 @@ system/
 
 13 directories, 15 files
 ```
+
+Uso
+```
+ ping -c 3 registry.local
+ iprj  registry
+ #docker pull registry.local:5000/NAME:TAG
+ docker pull registry.local:5000/ivancarlos/xpto-server:amd
+```
