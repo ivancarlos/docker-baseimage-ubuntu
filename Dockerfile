@@ -114,6 +114,7 @@ RUN \
 # enable su
 COPY system/su-exec/su-exec /usr/local/bin/su-exec
 COPY system/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY system/root/usr/bin/with-contenv /usr/bin/with-contenv
 
 # add local files
 #COPY system/root/ /
