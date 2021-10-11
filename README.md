@@ -11,6 +11,23 @@ eval "$(pyenv vars)"
 make rmi
 ```
 
+## Trabalhando com seções
+
+```bash
+make up log
+```
+
+Em outro terminal faço:
+
+```bash
+make exec
+```
+
+Para container e o remove
+```bash
+make clean
+```
+
 ```text
 system/
 ├── entrypoint.sh

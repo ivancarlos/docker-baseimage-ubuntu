@@ -97,7 +97,7 @@ run: config
 		${SERVICE}
 
 exec:
-	$(DOCKER) exec -it $(CONTAINER_NAME) /bin/bash
+	$(DOCKER_COMPOSE) exec $(CONTAINER_NAME) entrypoint.sh /bin/bash -l
 
 ps:
 	$(DOCKER) ps -a

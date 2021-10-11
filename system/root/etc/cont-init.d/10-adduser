@@ -40,6 +40,4 @@ else
 	fi
 	export HOME=/home/$USER
 	mkdir -p $HOME
-	exec /usr/local/bin/su-exec $USER "$@"
-	chown $USER:$GROUP $HOME
 fi
