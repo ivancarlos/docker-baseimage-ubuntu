@@ -16,6 +16,7 @@ services:
       - ./system/opt/sdk:/opt/sdk
       - ./system/var/sdk:/var/sdk
       - ./system/etc/sdk:/etc/sdk
+      - ${PWD}/home:/home/${USER}
 
     environment:
       - PUID=${UID}
