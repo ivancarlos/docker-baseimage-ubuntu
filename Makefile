@@ -19,7 +19,7 @@ env-file          = env.production
 
 VERSION           = $(MAJOR).$(MINOR).$(PATCH)
 SERVICE           = ${NAME}
-OWNER             = ${GITHUB_USER}
+OWNER             = registry.local:5000/ivancarlos
 MACHINENAME       = $(OWNER)/$(NAME)
 
 DOCKER_COMPOSE    = docker-compose --env-file ${env-file}
@@ -35,7 +35,7 @@ EXT_RELEASE_CLEAN = $(MINOR)
 LS_TAG_NUMBER     = $(PATCH)
 
 IMAGE             = ${MACHINENAME}
-META_TAG          = amd64-${VERSION}
+META_TAG          = amd64-1.2.5
 VERSION_TAG       = ${LATEST}
 
 ##############################################################################
