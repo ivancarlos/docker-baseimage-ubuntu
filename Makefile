@@ -15,13 +15,14 @@ USER              = $(shell id -u -n)
 GROUP             = $(shell id -g -n)
 UID               = $(shell id -u)
 GID               = $(shell id -g)
+env-file          = env.production
 
 VERSION           = $(MAJOR).$(MINOR).$(PATCH)
 SERVICE           = ${NAME}
 OWNER             = ${GITHUB_USER}
 MACHINENAME       = $(OWNER)/$(NAME)
 
-DOCKER_COMPOSE    = docker-compose
+DOCKER_COMPOSE    = docker-compose --env-file ${env-file}
 DOCKER            = docker
 CONTAINER_NAME    = $(NAME)
 EMAIL             = $(shell git config user.email)
@@ -36,6 +37,13 @@ LS_TAG_NUMBER     = $(PATCH)
 IMAGE             = ${MACHINENAME}
 META_TAG          = amd64-${VERSION}
 VERSION_TAG       = ${LATEST}
+
+##############################################################################
+
+VOLUMES = -v `pwd`/system/root/etc/cont-init.d:/etc/cont-init.d \
+		  -v `pwd`/system/opt/sdk:/opt/sdk \
+          -v `pwd`/system/var/sdk:/var/sdk \
+          -v `pwd`/system/etc/sdk:/etc/sdk
 
 BUILD_LABEL       = \
 	--label "org.opencontainers.image.created=${GITHUB_DATE}" \
@@ -59,22 +67,33 @@ all: status
 init:
 	sudo chown ${USER}:${USER} -R system/
 
-up: export META_TAG := $(META_TAG)
-up: export IMAGE := $(IMAGE)
-up: export CONTAINER_NAME := $(CONTAINER_NAME)
-up:
-	USER=${USER} GROUP=${GROUP} UID=${UID} GID=${GID} $(DOCKER_COMPOSE) up -d ${SERVICE}
+config:
+	# Configure envireoment file ${env-file}
+	@echo ''                                > ${env-file}
+	@echo META_TAG=$(META_TAG)             >> ${env-file}
+	@echo IMAGE=$(IMAGE)                   >> ${env-file}
+	@echo CONTAINER_NAME=$(CONTAINER_NAME) >> ${env-file}
+	@echo HOSTNAME=${NAME}                 >> ${env-file}
+	@echo SERVICE=${SERVICE}               >> ${env-file}
+	@echo USER=${USER}                     >> ${env-file}
+	@echo GROUP=${GROUP}                   >> ${env-file}
+	@echo UID=${UID}                       >> ${env-file}
+	@echo GID=${GID}                       >> ${env-file}
+	$(DOCKER_COMPOSE) config
 
-run: export META_TAG := $(META_TAG)
-run: export IMAGE := $(IMAGE)
-run: export CONTAINER_NAME := $(CONTAINER_NAME)
-run:
+up: config
+	$(DOCKER_COMPOSE) up -d ${SERVICE}
+
+run: config
+	# create user ${USER}
 	$(DOCKER_COMPOSE) run --rm \
 		--name ${NAME} \
 		-e USER=$$(id -u -n) \
 		-e GROUP=$$(id -g -n) \
 		-e UID=$$(id -u) \
 		-e GID=$$(id -g) \
+		${VOLUMES} \
+		-w/home/$$(id -u -n) \
 		${SERVICE}
 
 exec:
