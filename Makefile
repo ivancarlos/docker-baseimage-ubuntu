@@ -56,6 +56,9 @@ BUILD_OPTS = $(BUILD_LABEL) -t ${IMAGE}:${META_TAG} --build-arg VERSION="${VERSI
 
 all: status
 
+init:
+	sudo chown ${USER}:${USER} -R system/
+
 up: export META_TAG := $(META_TAG)
 up: export IMAGE := $(IMAGE)
 up: export CONTAINER_NAME := $(CONTAINER_NAME)
